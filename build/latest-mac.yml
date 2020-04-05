@@ -1,0 +1,12 @@
+version: 0.0.1
+files:
+  - url: SimHat-0.0.1-mac.zip
+    sha512: EJmHlGT/7XcUFoPAezZO+s4JrBKjEfTWXYTllhXEhT6jQruVz9WRzm5lCdFkfD50dCwGhEJiqupb/88KUMsldg==
+    size: 139883666
+    blockMapSize: 148756
+  - url: SimHat-0.0.1.dmg
+    sha512: MUA2HVRl2ZXkqZpZ6IcaRehOk7XJfVkajRFMqwLJU+MrkTrWwpLcRYt+0/NVWwddLFBKI6EKWoOlWTrf18Fbnw==
+    size: 144067031
+path: SimHat-0.0.1-mac.zip
+sha512: EJmHlGT/7XcUFoPAezZO+s4JrBKjEfTWXYTllhXEhT6jQruVz9WRzm5lCdFkfD50dCwGhEJiqupb/88KUMsldg==
+releaseDate: '2020-04-03T16:22:36.208Z'

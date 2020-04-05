@@ -1,0 +1,52 @@
+directories:
+  output: ./build/
+  buildResources: build
+productName: SimHat
+appId: com.mubaidr.vue-electron-template
+files:
+  - filter:
+      - _icons/icon.*
+      - ./dist/**/*
+      - '!./dist/web/**/*'
+dmg:
+  contents:
+    - path: /Applications
+      type: link
+      x: 410
+      'y': 230
+    - type: file
+      x: 130
+      'y': 230
+  sign: false
+  window:
+    height: 380
+    width: 540
+mac:
+  target:
+    - dmg
+    - zip
+  icon: _icons/icon.icns
+  hardenedRuntime: false
+  entitlements: entitlements.mac.plist
+  extendInfo:
+    NSCameraUsageDescription: This app requires camera access to record video.
+  category: public.app-category.utilities
+  type: distribution
+win:
+  icon: _icons/icon.ico
+  verifyUpdateCodeSignature: false
+  target:
+    - nsis
+    - zip
+    - portable
+linux:
+  icon: _icons/icon.png
+  target:
+    - deb
+    - snap
+    - AppImage
+copyright: Copyright ©2019 mubaidr@gmail.com
+nsis:
+  allowToChangeInstallationDirectory: true
+  oneClick: false
+electronVersion: 8.2.0
