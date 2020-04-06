@@ -91,23 +91,48 @@ export default class Pose {
 
     // Create pixel factor
 
-    const pixelRangeMin = -90
-    const pixelRangeMax = 90
+    const pixelRangeMin = 0
+    const pixelRangeMax = 100
     const pixelRange = pixelRangeMax - pixelRangeMin
 
     // Yaw
 
     const eyeHorizentalRange = leftEye.x - rightEye.x
-    const yaw = (((widthIntersect.x - rightEye.x) * pixelRange) / eyeHorizentalRange) + pixelRangeMin
+    let yaw = (((widthIntersect.x - rightEye.x) * pixelRange) / eyeHorizentalRange) + pixelRangeMin
+ 
+    
+    if (yaw > 80) {
+      yaw = 90
+    } else if (yaw > 60) {
+      yaw = 65
+    } else if (yaw < 20) {
+      yaw = -90
+    } else if (yaw < 40) {
+      yaw = -65
+    } else {
+      yaw = 0
+    }
 
     // Pitch
 
     const eyeVerticalRange = leftEyeBottom.y - leftEye.y
-    const pitch = (((heightIntersect.y - leftEye.y) * pixelRange) / eyeVerticalRange) + pixelRangeMin
+    let pitch = (((heightIntersect.y - leftEye.y) * pixelRange) / eyeVerticalRange) + pixelRangeMin
+
+if (pitch > 80) {
+  pitch = 90
+} else if (pitch > 60) {
+  pitch = 65
+} else if (pitch < 20) {
+  pitch = -90
+} else if (pitch < 40) {
+  pitch = -65
+} else {
+  pitch = 0
+}
 
     // Roll
 
-    let roll = round((rightEye.y - leftEye.y) / (rightEye.x - leftEye.x) * 100)
+    let roll = 0//round((rightEye.y - leftEye.y) / (rightEye.x - leftEye.x) * 100)
 
     // Draw
     

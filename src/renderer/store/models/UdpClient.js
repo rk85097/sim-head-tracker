@@ -8,10 +8,10 @@ export default class UDPClient {
         this.client = dgram.createSocket('udp4')
     }
 
-    send(value, dataref) {
+    send(dataref, value) {
         let runningIndex = 4
         const farr = new Float32Array(1)
-        farr[0] = value
+        farr[0] = -value
         const valBytes = new Uint8Array(farr.buffer)
         runningIndex += dataref.length + valBytes.length
         const rawMsg = [...[68,82,69,70,0], ...valBytes, ...dataref]
@@ -20,6 +20,6 @@ export default class UDPClient {
             rawMsg[i] = 0    
         }
         const msg = new Buffer(rawMsg)
-        this.client.send(msg, 0, msg.length, this.port, this.ip)
+        this.client.send(msg, this.port, this.ip)
     }
 }

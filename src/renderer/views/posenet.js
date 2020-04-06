@@ -8,11 +8,9 @@ const PITCH_DATAREF = new Buffer.from('sim/graphics/view/pilots_head_the')
 const ROLL_DATAREF = new Buffer.from('sim/graphics/view/pilots_head_psi')
 const YAW_DATAREF = new Buffer.from('sim/graphics/view/pilots_head_phi')
 
-const UDP = new UDPClient(49000 ,'10.100.102.14')
+const UDP = new UDPClient(49000 ,'10.100.102.8')
 
-const INPUT_RESOLUTION = 417
-const POSENET_FREQ = 250
-const VIDEO_FRAMERATE = 4
+const POSENET_FREQ = 100
 const POSENET_OPTIONS = {
   imageScaleFactor: 0.3,
  outputStride: 16,
@@ -25,9 +23,7 @@ const POSENET_OPTIONS = {
 }
 const VIDEO_OPTIONS = {
   audio: false,
-  video: { frameRate: 4, //{ ideal: 10, max: 10 },
-
-  }
+  video: { frameRate: 4 }
 }
 
 export default function run () {
@@ -39,6 +35,7 @@ export default function run () {
   const CANVAS_CTX = CANVAS_ELEMENT.getContext('2d', { alpha: true })
   const poseNet = ml5.poseNet(modelReady, POSENET_OPTIONS)
 
+ 
   function setMediaSource () {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices.getUserMedia(VIDEO_OPTIONS).then(stream => {
@@ -62,6 +59,7 @@ export default function run () {
   }
 
   function sendToSim(position) {
+    console.table(position)
     UDP.send(PITCH_DATAREF, position.pitch)
     UDP.send(YAW_DATAREF, position.roll)
     UDP.send(ROLL_DATAREF, position.yaw)

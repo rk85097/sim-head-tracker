@@ -1,6 +1,6 @@
 import Utils from './Utils'
 
-const POS_FILTER_COUNT = 35
+const POS_FILTER_COUNT = 15
 const MIN_SCORE = 0.7
 
 export default class KeyPoint {
