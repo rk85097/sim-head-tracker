@@ -18,15 +18,14 @@ const POSENET_OPTIONS = {
  outputStride: 16,
  flipHorizontal: false,
  minConfidence: 0.5,
- maxPoseDetections: 1,
  scoreThreshold: 0.5,
  nmsRadius: 20,
  detectionType: 'single',
- multiplier: 0.75,
+ multiplier: 0.50,
 }
 const VIDEO_OPTIONS = {
   audio: false,
-  video: { frameRate: 60, //{ ideal: 10, max: 10 },
+  video: { frameRate: 4, //{ ideal: 10, max: 10 },
 
   }
 }

@@ -1,4 +1,3 @@
-import Utils from './Utils'
 import KeyPoint from './KeyPointModel'
 
 const MIN_SCORE = 0.3
@@ -54,8 +53,6 @@ export default class Pose {
     return this.score > MIN_SCORE
   }
 
-
-
   position () {
 
     // Fetch points
@@ -110,9 +107,9 @@ export default class Pose {
 
     // Roll
 
-    let roll = roundToTwo((rightEye.y - leftEye.y) / (rightEye.x - leftEye.x) * 100)
+    let roll = round((rightEye.y - leftEye.y) / (rightEye.x - leftEye.x) * 100)
 
-    // DRAW
+    // Draw
     
     const facePolygon = [rightEye, leftEye, leftEyeBottom]  
     facePolygon.forEach((p, index) => {
@@ -166,24 +163,7 @@ export default class Pose {
   }
 }
 
-function avg (v) {
-  return v.reduce((a,b) => a+b, 0)/v.length;
-}
-
-function smoothOut (vector, variance) {
-  var t_avg = avg(vector)*variance;
-  var ret = Array(vector.length);
-  for (var i = 0; i < vector.length; i++) {
-    (function () {
-      var prev = i>0 ? ret[i-1] : vector[i];
-      var next = i<vector.length ? vector[i] : vector[i-1];
-      ret[i] = avg([t_avg, avg([prev, vector[i], next])]);
-    })();
-  }
-  return ret;
-}
-
-function roundToTwo(num) {    
+function round(num) {    
   return +(Math.round(num + "e+1")  + "e-1");
 }
 

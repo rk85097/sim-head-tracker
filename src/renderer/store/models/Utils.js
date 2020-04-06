@@ -1,12 +1,10 @@
 const Taira = require('taira')
 
 export default class Utils {
-  static avgPoints (pts) {
-    // let xa = Utils.avg(Taira.smoothen(pts.map((p) => { return p.x }), Taira.ALGORITHMS.GAUSSIAN, 2, 0.99, false))
-    // let ya = Utils.avg(Taira.smoothen(pts.map((p) => { return p.y }), Taira.ALGORITHMS.GAUSSIAN, 2, 0.99, false))
-    let xa = Utils.avg(pts.map((p) => { return p.x }))
-    let ya = Utils.avg(pts.map((p) => { return p.y }))
-    return { x: xa, y: ya }
+  static smoothPoints (points) {
+    const xArr = points.map(p => { return p.x })
+    const yArr = points.map(p => { return p.y })
+    return { x: Utils.avg(xArr), y: Utils.avg(yArr) }
   }
   static avg (v) {
     return v.reduce((a, b) => a + b, 0) / v.length

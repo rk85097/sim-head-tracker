@@ -1,6 +1,6 @@
 import Utils from './Utils'
 
-const POS_FILTER_COUNT = 25
+const POS_FILTER_COUNT = 35
 const MIN_SCORE = 0.7
 
 export default class KeyPoint {
@@ -28,7 +28,7 @@ export default class KeyPoint {
     if (this.rawPosition !== null) {
       this.filterQueue.push(this.rawPosition)
     }
-    return Utils.avgPoints(this.filterQueue)
+    return Utils.smoothPoints(this.filterQueue)
   }
 
   set smoothPos (val) {
