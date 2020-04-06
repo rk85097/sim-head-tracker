@@ -88,7 +88,7 @@ function createWindow() {
     show: false,
   })
 
-  mainWindow.setAlwaysOnTop(true, 'screen-saver')
+  mainWindow.setAlwaysOnTop(true, 'floating')
   // eslint-disable-next-line
   setMenu()
 

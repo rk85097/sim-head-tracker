@@ -5549,6 +5549,11 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
+kalmanjs@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/kalmanjs/-/kalmanjs-1.1.0.tgz#9554566a0a7ca72722d35a23ab05915c0ddba99e"
+  integrity sha512-Gkm2DAKIX8geuDcEJ92e80EmQ6TyIzWBJk6AFk+aDLofQ4G/KoDe1RCY9WMuXFe0NQxsTi7HYh9BVQneOtlvkg==
+
 keyboardevent-from-electron-accelerator@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/keyboardevent-from-electron-accelerator/-/keyboardevent-from-electron-accelerator-2.0.0.tgz#ace21b1aa4e47148815d160057f9edb66567c50c"
@@ -8968,6 +8973,11 @@ table@^5.2.3:
     lodash "^4.17.14"
     slice-ansi "^2.1.0"
     string-width "^3.0.0"
+
+taira@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/taira/-/taira-3.2.1.tgz#3ccee69eae8213aeb79db6ebf4cacb5e49afbdb6"
+  integrity sha512-DbtlGsJcP7X3YTmW8EvwGZC46PpmYiFRAtnXHi7R5XYyU1d44tUkqpxVA+wTWoDi4YKspI/aNO3XfnH+7jPdFA==
 
 tapable@^1.0.0, tapable@^1.1.3:
   version "1.1.3"

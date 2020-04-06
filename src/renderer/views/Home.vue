@@ -2,8 +2,8 @@
     <section class="hero is-dark is-bold">
       <div class="hero-body">
         <div class="block has-text-centered">
-          <video id="video" width="417" height="417" autoplay style="position: absolute; display: none;"/>
-        <canvas style="position: absolute; display: none" id="canvas" width="417" height="417"/>
+          <video id="video" width="417" height="320" autoplay style="position: absolute; display: blank;"/>
+        <canvas style="position: absolute; display: blank" id="canvas" width="417" height="320"/>
 
           <!-- <img width="256" alt="Placeholder image" src="../../../_icons/logo_simhat.png" />
           <br><br>

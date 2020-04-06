@@ -1,39 +1,26 @@
-// import KalmanFilter from 'kalmanjs'
+const Taira = require('taira')
 
 export default class Utils {
   static avgPoints (pts) {
+    // let xa = Utils.avg(Taira.smoothen(pts.map((p) => { return p.x }), Taira.ALGORITHMS.GAUSSIAN, 2, 0.99, false))
+    // let ya = Utils.avg(Taira.smoothen(pts.map((p) => { return p.y }), Taira.ALGORITHMS.GAUSSIAN, 2, 0.99, false))
     let xa = Utils.avg(pts.map((p) => { return p.x }))
     let ya = Utils.avg(pts.map((p) => { return p.y }))
     return { x: xa, y: ya }
   }
-
-  static getDistance (p1, p2) {
-    var a = p1.x - p2.x
-    var b = p1.y - p2.y
-    return Math.sqrt(a * a + b * b)
-  }
-
   static avg (v) {
     return v.reduce((a, b) => a + b, 0) / v.length
   }
-
-  static midpoint (a, b) {
-    return {x: (a.x + b.x / 2), y: (a.y + b.y / 2)}
-  }
-
-  // static applyKalman (data, r = 0.01, q = 20) {
-  //   var kf = new KalmanFilter({R: r, Q: q})
-  //   return data.map(function (v) {
-  //     return kf.filter(v)
-  //   })
-  // }
-
-  static setUIStatusContent (text) {
-    document.getElementById('status').innerHTML = text
-  }
-
-  static setAvatarOpacity (opacity) {
-    const style = 'opacity: ' + opacity
-    document.getElementById('avi').style = style
+  static smoothOut (vector, variance) {
+    var t_avg = Utils.avg(vector)*variance;
+    var ret = Array(vector.length);
+    for (var i = 0; i < vector.length; i++) {
+      (function () {
+        var prev = i>0 ? ret[i-1] : vector[i];
+        var next = i<vector.length ? vector[i] : vector[i-1];
+        ret[i] = Utils.avg([t_avg, Utils.avg([prev, vector[i], next])]);
+      })();
+    }
+    return ret;
   }
 }

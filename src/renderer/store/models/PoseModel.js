@@ -2,15 +2,13 @@ import Utils from './Utils'
 import KeyPoint from './KeyPointModel'
 
 const MIN_SCORE = 0.3
-const FACE_MAX_DIST = 35
 const RELEVANT_KEYPOINTS = ['leftEye', 'rightEye', 'nose']
 
 export default class Pose {
-  constructor (raw, shouldDrawPose, ctx) {
+  constructor (raw, ctx) {
     this.score = raw.score
     this.rawKeypoints = raw.keypoints
-    this.uprightKeyPoints = []
-    this.shouldDrawPose = false
+    this.keypoints = []
     this.ctx = ctx
     this.polygonHeightInit = null
   }
@@ -26,8 +24,8 @@ export default class Pose {
 
   initKeyPoints () {
     this.rawKeypoints.filter((kp) => { return RELEVANT_KEYPOINTS.includes(kp.part) }).forEach(kp => {
-      if (this.uprightKeyPoints.filter((ekp) => { return ekp.part === kp.part }).length === 0) {
-        this.uprightKeyPoints.push({part: kp.part, obj: new KeyPoint()})
+      if (this.keypoints.filter((ekp) => { return ekp.part === kp.part }).length === 0) {
+        this.keypoints.push({part: kp.part, obj: new KeyPoint()})
       } else {
         this.updateKeyPoint(kp.part, kp)
       }
@@ -40,57 +38,31 @@ export default class Pose {
     this.initKeyPoints()
   }
 
-  getUprightKeyPoint (part) {
-    return this.uprightKeyPoints.find(item =>  item.part === part)
+  getKeypoint (part) {
+    return this.keypoints.find(item =>  item.part === part)
   }
 
   updateKeyPoint (part, raw) {
-    this.uprightKeyPoints.forEach(kp => {
+    this.keypoints.forEach(kp => {
       if (kp.part === part) {
         kp.obj.updateRaw(raw)
-        if (this.shouldDrawPose) {
-          kp.obj.drawPoint(this.ctx)
-        }
       }
     })
   }
 
   isPoseValid () {
-    let el = 0
-    let er = 0
-    for (let j = 0; j < this.rawKeypoints.length; j++) {
-      let k = this.rawKeypoints[j]
-      if (k.part === 'leftEye') {
-        el = k.position
-      } else if (k.part === 'rightEye') {
-        er = k.position
-      }
-    }
-    const condA = Utils.getDistance(el, er) > FACE_MAX_DIST
-    const condB = this.score > MIN_SCORE
-    const success = condA && condB
-    return success
+    return this.score > MIN_SCORE
   }
 
-  isCalibrating () {
-    return !this.uprightKeyPoints.some((kp) => {
-      return kp.obj.isCalibrated
-    })
-  }
 
-  resetCalibration () {
-    this.uprightKeyPoints.forEach(kp => {
-      kp.obj.reset()
-    })
-  }
 
   position () {
 
     // Fetch points
 
-    const le = this.getUprightKeyPoint('leftEye')
-    const re = this.getUprightKeyPoint('rightEye')
-    const no = this.getUprightKeyPoint('nose')
+    const le = this.getKeypoint('leftEye')
+    const re = this.getKeypoint('rightEye')
+    const no = this.getKeypoint('nose')
 
     // Validate
 
@@ -138,7 +110,7 @@ export default class Pose {
 
     // Roll
 
-    const roll = (rightEye.y - leftEye.y) / (rightEye.x - leftEye.x)
+    let roll = roundToTwo((rightEye.y - leftEye.y) / (rightEye.x - leftEye.x) * 100)
 
     // DRAW
     
@@ -167,21 +139,18 @@ export default class Pose {
     })
 
     this.ctx.beginPath()
-    this.ctx.arc(widthIntersect.x, widthIntersect.y, 3, 0, 2 * Math.PI)
+    this.ctx.arc(widthIntersect.x, widthIntersect.y, 2, 0, 2 * Math.PI)
     this.ctx.stroke()
     this.ctx.fillStyle = 'white'
     this.ctx.fill()
 
     this.ctx.beginPath()
-    this.ctx.arc(heightIntersect.x, heightIntersect.y, 3, 0, 2 * Math.PI)
+    this.ctx.arc(heightIntersect.x, heightIntersect.y, 2, 0, 2 * Math.PI)
     this.ctx.stroke()
     this.ctx.fillStyle = 'white'
     this.ctx.fill()
 
-    console.log({ roll, yaw, pitch })
-
     return { roll, yaw, pitch }
-
   }
 
   x () {
@@ -195,6 +164,27 @@ export default class Pose {
   z () {
     return 0
   }
+}
+
+function avg (v) {
+  return v.reduce((a,b) => a+b, 0)/v.length;
+}
+
+function smoothOut (vector, variance) {
+  var t_avg = avg(vector)*variance;
+  var ret = Array(vector.length);
+  for (var i = 0; i < vector.length; i++) {
+    (function () {
+      var prev = i>0 ? ret[i-1] : vector[i];
+      var next = i<vector.length ? vector[i] : vector[i-1];
+      ret[i] = avg([t_avg, avg([prev, vector[i], next])]);
+    })();
+  }
+  return ret;
+}
+
+function roundToTwo(num) {    
+  return +(Math.round(num + "e+1")  + "e-1");
 }
 
 function intersect(x1, y1, x2, y2, x3, y3, x4, y4) {
