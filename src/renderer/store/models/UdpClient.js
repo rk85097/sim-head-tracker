@@ -24,7 +24,7 @@ export default class UDPClient {
             if (err) {
                 console.log(err)
             } else {
-                console.log('dadad')
+                // console.log('dadad')
             }
           });
     }

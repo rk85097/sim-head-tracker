@@ -61,6 +61,7 @@ export default class Pose {
     const re = this.getKeypoint('rightEye')
     const no = this.getKeypoint('nose')
 
+
     // Validate
 
     if (!le || !re || !no) {
@@ -91,8 +92,8 @@ export default class Pose {
 
     // Create pixel factor
 
-    const pixelRangeMin = -3
-    const pixelRangeMax = 3
+    const pixelRangeMin = -90
+    const pixelRangeMax = 90
     const pixelRange = pixelRangeMax - pixelRangeMin
 
     // Yaw
@@ -131,45 +132,45 @@ export default class Pose {
 
     // Roll
 
-    let roll = 0//round((rightEye.y - leftEye.y) / (rightEye.x - leftEye.x) * 100)
+    let roll = round((rightEye.y - leftEye.y) / (rightEye.x - leftEye.x) * 100)
 
     // Draw
     
-    const facePolygon = [rightEye, leftEye, leftEyeBottom]  
-    facePolygon.forEach((p, index) => {
-      const nextP = facePolygon[index + 1]
-      if (nextP) {
-        this.ctx.beginPath()
-        this.ctx.strokeStyle = 'yellow'
-        this.ctx.moveTo(p.x, p.y)
-        this.ctx.lineTo(facePolygon[index + 1].x, facePolygon[index + 1].y)
-        this.ctx.stroke()
-      }
-    })
+    // const facePolygon = [rightEye, leftEye, leftEyeBottom]  
+    // facePolygon.forEach((p, index) => {
+    //   const nextP = facePolygon[index + 1]
+    //   if (nextP) {
+    //     this.ctx.beginPath()
+    //     this.ctx.strokeStyle = 'yellow'
+    //     this.ctx.moveTo(p.x, p.y)
+    //     this.ctx.lineTo(facePolygon[index + 1].x, facePolygon[index + 1].y)
+    //     this.ctx.stroke()
+    //   }
+    // })
     
-    const nosePolygon = [noseVerticalPoint, nose, noseHorizentalPoint]
-    nosePolygon.forEach((p, index) => {
-      const nextP = nosePolygon[index + 1]
-      if (nextP) {
-        this.ctx.beginPath()
-        this.ctx.strokeStyle = 'yellow'
-        this.ctx.moveTo(p.x, p.y)
-        this.ctx.lineTo(nosePolygon[index + 1].x, nosePolygon[index + 1].y)
-        this.ctx.stroke()
-      }
-    })
+    // const nosePolygon = [noseVerticalPoint, nose, noseHorizentalPoint]
+    // nosePolygon.forEach((p, index) => {
+    //   const nextP = nosePolygon[index + 1]
+    //   if (nextP) {
+    //     this.ctx.beginPath()
+    //     this.ctx.strokeStyle = 'yellow'
+    //     this.ctx.moveTo(p.x, p.y)
+    //     this.ctx.lineTo(nosePolygon[index + 1].x, nosePolygon[index + 1].y)
+    //     this.ctx.stroke()
+    //   }
+    // })
 
-    this.ctx.beginPath()
-    this.ctx.arc(widthIntersect.x, widthIntersect.y, 2, 0, 2 * Math.PI)
-    this.ctx.stroke()
-    this.ctx.fillStyle = 'white'
-    this.ctx.fill()
+    // this.ctx.beginPath()
+    // this.ctx.arc(widthIntersect.x, widthIntersect.y, 2, 0, 2 * Math.PI)
+    // this.ctx.stroke()
+    // this.ctx.fillStyle = 'white'
+    // this.ctx.fill()
 
-    this.ctx.beginPath()
-    this.ctx.arc(heightIntersect.x, heightIntersect.y, 2, 0, 2 * Math.PI)
-    this.ctx.stroke()
-    this.ctx.fillStyle = 'white'
-    this.ctx.fill()
+    // this.ctx.beginPath()
+    // this.ctx.arc(heightIntersect.x, heightIntersect.y, 2, 0, 2 * Math.PI)
+    // this.ctx.stroke()
+    // this.ctx.fillStyle = 'white'
+    // this.ctx.fill()
 
     return { roll, yaw, pitch }
   }
