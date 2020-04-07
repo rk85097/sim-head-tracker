@@ -20,6 +20,12 @@ export default class UDPClient {
             rawMsg[i] = 0    
         }
         const msg = new Buffer(rawMsg)
-        this.client.send(msg, this.port, this.ip)
+        this.client.send(msg, 0, msg.length, this.port, this.ip, (err) => {
+            if (err) {
+                console.log(err)
+            } else {
+                console.log('dadad')
+            }
+          });
     }
 }
