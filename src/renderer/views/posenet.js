@@ -4,7 +4,7 @@
 import Pose from '../store/models/PoseModel'
 import UDPClient from '../store/models/UdpClient'
 
-
+import '@tensorflow/tfjs-node'
 import * as faceapi from 'face-api.js'
 
 const PITCH_DATAREF = new Buffer.from('sim/graphics/view/pilots_head_the')
@@ -26,11 +26,11 @@ const POSENET_OPTIONS = {
 }
 const VIDEO_OPTIONS = {
   audio: false,
-  video: { frameRate: 4 }
+  video: true
 }
 
 export default function run () {
-  xxx()
+
   let pose
 
   const VIDEO_ELEMENT = document.getElementById('video')
@@ -71,12 +71,12 @@ export default function run () {
     })
     console.log('3')
 
-   
+    
 
 
   })();
 
-
+ 
   async function runFaceAPI() {
     console.log('2')
     setInterval(async () => {
@@ -86,7 +86,6 @@ export default function run () {
   }
 
   async function onDraw () {
-    CANVAS_CTX.clearRect(0, 0, CANVAS_ELEMENT.width, CANVAS_ELEMENT.height)
 
     window.requestAnimationFrame(onDraw)
 
@@ -94,22 +93,14 @@ export default function run () {
       pose.initKeyPoints()
     }
 
+    CANVAS_CTX.clearRect(0, 0, CANVAS_ELEMENT.width, CANVAS_ELEMENT.height)
 
-     
     
-  }
+    var inf = await faceapi.detectAllFaces(VIDEO_ELEMENT).withFaceLandmarks(true)
 
-  function xxx() {
-
-
-  setTimeout(async () => {
-    
-    console.log('dddd')
-    var inf = await faceapi.detectSingleFace(VIDEO_ELEMENT).withFaceLandmarks(true)
-
-    const a = inf.landmarks.positions[42]
-    const b = inf.landmarks.positions[40]
-    const c = inf.landmarks.positions[34]
+    const a = inf[0].landmarks.positions[46]
+    const b = inf[0].landmarks.positions[41]
+    const c = inf[0].landmarks.positions[33]
 
 
 
@@ -124,10 +115,36 @@ export default function run () {
     }
     
     pose.position()
-    xxx()
+     
+    
+  }
+
+  setInterval(async () => {
+    // CANVAS_CTX.clearRect(0, 0, CANVAS_ELEMENT.width, CANVAS_ELEMENT.height)
+
+    
+    // var inf = await faceapi.detectAllFaces(VIDEO_ELEMENT).withFaceLandmarks(true)
+
+    // const a = inf[0].landmarks.positions[46]
+    // const b = inf[0].landmarks.positions[41]
+    // const c = inf[0].landmarks.positions[33]
+
+
+
+    // const newPose = {
+    //   score: 1, keypoints: [{score: 1, part: 'nose', position: c}, {score: 1, part: 'leftEye', position: a},{score: 1, part: 'rightEye', position: b}]
+    // }
+
+    // if (pose) {
+    //   pose.updateRaw(newPose)
+    // } else {
+    //   pose = new Pose(newPose, CANVAS_CTX)
+    // }
+    
+    // pose.position()
+
 
   }, 250);
-}
 
   function sendToSim(position) {
     UDP.send(PITCH_DATAREF, position.pitch)
