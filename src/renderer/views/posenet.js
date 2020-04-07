@@ -26,11 +26,11 @@ const POSENET_OPTIONS = {
 }
 const VIDEO_OPTIONS = {
   audio: false,
-  video: { frameRate: 15 }
+  video: { frameRate: 4 }
 }
 
 export default function run () {
-
+  xxx()
   let pose
 
   const VIDEO_ELEMENT = document.getElementById('video')
@@ -71,12 +71,12 @@ export default function run () {
     })
     console.log('3')
 
-    
+   
 
 
   })();
 
- 
+
   async function runFaceAPI() {
     console.log('2')
     setInterval(async () => {
@@ -86,68 +86,48 @@ export default function run () {
   }
 
   async function onDraw () {
+    CANVAS_CTX.clearRect(0, 0, CANVAS_ELEMENT.width, CANVAS_ELEMENT.height)
 
     window.requestAnimationFrame(onDraw)
-    // const isPoseValid = pose && pose.isPoseValid()
-    // if (!isPoseValid) {
-    //   return
-    // }
+
     if (pose) {
       pose.initKeyPoints()
     }
 
-    // setInterval(async () => {
-      var inf = await faceapi.detectSingleFace(VIDEO_ELEMENT).withFaceLandmarks(true)
 
-      const a = inf.landmarks.positions[42]
-      const b = inf.landmarks.positions[40]
-      const c = inf.landmarks.positions[34]
-    
-console.log(a)
-    return
-      // CANVAS_CTX.beginPath()
-      // CANVAS_CTX.arc(a.x, a.y, 2, 0, 2 * Math.PI)
-      // CANVAS_CTX.stroke()
-      // CANVAS_CTX.fillStyle = 'red'
-      // CANVAS_CTX.fill()
-
-      // CANVAS_CTX.beginPath()
-      // CANVAS_CTX.arc(b.x, b.y, 2, 0, 2 * Math.PI)
-      // CANVAS_CTX.stroke()
-      // CANVAS_CTX.fillStyle = 'red'
-      // CANVAS_CTX.fill()
-
-      // CANVAS_CTX.beginPath()
-      // CANVAS_CTX.arc(c.x, c.y, 2, 0, 2 * Math.PI)
-      // CANVAS_CTX.stroke()
-      // CANVAS_CTX.fillStyle = 'red'
-      // CANVAS_CTX.fill()
-// 
-      const newPose = {
-        score: 1, keypoints: [{score: 1, part: 'nose', position: c}, {score: 1, part: 'leftEye', position: a},{score: 1, part: 'rightEye', position: b}]
-      }
-
-      if (pose) {
-        pose.updateRaw(newPose)
-      } else {
-        pose = new Pose(newPose, CANVAS_CTX)
-      }
-      
-      
-    sendToSim(pose.position())
-
-    // }, 250);
+     
     
   }
 
-  // setInterval(async () => {
+  function xxx() {
+
+
+  setTimeout(async () => {
     
+    console.log('dddd')
+    var inf = await faceapi.detectSingleFace(VIDEO_ELEMENT).withFaceLandmarks(true)
+
+    const a = inf.landmarks.positions[42]
+    const b = inf.landmarks.positions[40]
+    const c = inf.landmarks.positions[34]
+
+
+
+    const newPose = {
+      score: 1, keypoints: [{score: 1, part: 'nose', position: c}, {score: 1, part: 'leftEye', position: a},{score: 1, part: 'rightEye', position: b}]
+    }
+
+    if (pose) {
+      pose.updateRaw(newPose)
+    } else {
+      pose = new Pose(newPose, CANVAS_CTX)
+    }
     
+    pose.position()
+    xxx()
 
-  //       // CANVAS_CTX.clearRect(0, 0, CANVAS_ELEMENT.width, CANVAS_ELEMENT.height)
-
-
-  // }, 10);
+  }, 250);
+}
 
   function sendToSim(position) {
     UDP.send(PITCH_DATAREF, position.pitch)
